@@ -133,6 +133,7 @@ seq(1,100,5)
 #1,2,3,4,5의 벡터 값을 만들어 이를 100번 반복해 도출하는 벡터를 만드시오.
 rep(c(1:5), times = 100)
 
+
 #1,2,3,4,5의 벡터 값을 만들어 개별 값이 각각 100번 반복해 도출하는 벡터를 만드시오
 rep(c(1:5), each = 100)
 
@@ -159,3 +160,118 @@ rnorm(200, 100, 15)
 
 #인구 10명 중 1명에게 영향을 미치는 질병을 rbinom을 사용하여 500명을 대상으로 실시했을 때, 총 걸린 사람의 수는?
 rbinom(500, 500, 0.1)
+
+############################################################################################################
+# 2024.9.30(월) 재난안전프로그래밍 강의
+
+list_1 <- list(1, 2, 3)
+list_2 <- list(1.6, 2, 'A', "Hello")
+list_3 <- list("apple", "banana", "orange", 1, 1.5)
+
+# Vector 벡터 크기와 방향을 갖는 물리량 / 동일한 자료형만을 담을 수 있음
+a = list(1, 2, 3, 4)
+b = list(4, 5, 6, 7)
+a+b # 연산이 오류가 난다. why? 다양한 자료형들이 들어있기 때문에 연산이 안된다.
+
+Vector_1 <- c(1, 2, 3, 2.5) # 정수에 실수형을 넣으면 정수들이 실수로 형변환 된다!
+Vector_2 <- c("apple", "banana", "orange")
+Vector_3 <- c(TRUE, FALSE, TRUE)
+
+Vector_1
+Vector_2
+Vector_3
+
+Vector <- c("aa", 2, 3) # 모두 문자열로 변경
+Vector
+mode(Vector)
+
+List_1 <- c(1.6, 2.3, 3.5)
+List_2 <- c(2.6, 5.3, 7.5)
+List_1 + List_2
+
+Vector_1 <- c(1.6, 2.3, 3.5)
+Vector_2 <- c(2.6, 5.3, 7.5)
+Vector_1 + Vector_2
+
+# 리스트는 데이터를 담는 주머니이다.
+my_list <- list("apple", 3.14, c(1,2,3), TRUE) 
+my_list
+
+# 행렬은 2차원 데이터를 표현할 수 있는 "벡터"이다
+# nrow 헹, ncol 열 3*2 행렬로 만들겠다
+# 원하는 행렬의 크기와 데이티의 크기가 맞지 않으면 1 2 3 ...
+matrix(data = c(1,2,3,4,5,6), nrow = 3, ncol = 2)
+
+m = matrix(c(1,2,3,4), nrow=2) # 하나만 적어줘도 나머지는 알아서 채운다
+m
+
+# 행 열에 라벨 붙이는 법
+rownames(m) = c("Row1", "Row2")
+colnames(m) = c("Col1", "Col2")
+
+rownames <- c
+
+# 배열은 벡터와 동일하지만 2차원, 3차원도 가능하다!
+array(data = c(1,2,3,4,5,6), dim = c(2,3)) 
+
+array(data = c(1,2,3,4,5,6), dim = c(2,2,2)) 
+
+# 스칼라. 리스트, 벡터, 행렬, 벡터 -> 5개를 배웠다!!!
+# 개념들을 잘 알고있어라 -> 면접 잘 대답하는 것이 정말 중요하다.
+
+a = array(data = c(1,2,3,4,5,6), dim=c(2,2))
+b = array(data = c(1,2,3,4,5,6), dim=c(2,2))
+
+cbind(a,b) # 다른 특성을 공유하는 데이터 연결
+rbind(a,b) # 같은 특성을 공유하는 데이터 연결
+
+# 차원 별 이름을 부여할 수 있음
+my_array <- array(1:12, dim = c(2,3,2))
+my_array
+
+row_names <- c("Row1","Row2")
+col_names <- c("Col1","Col2", "Col3")
+slice_names <- c("Slice1","Slice2")
+
+dimnames(my_array) <- list(row_names, col_names, slice_names)
+my_array
+
+# 이름을 붙이고 싶지 않은 경우
+dimnames(my_array) <- list(NULL, col_names, slice_names)
+my_array
+# 이것들 잘 안쓰지만 기본기라 알아둬야 한다
+
+# 숫자들이 갖고 있는 위치 정보 -> 인덱싱이라고 한다!
+install.packages("stringr")
+library(stringr)
+
+a <- "abc defg"
+substr(a, 1, 5) # 1번째: 변수, 2...
+
+# 강원대학교 추출
+b <- "저는 강원대학교 학생"
+substr(b, 4,8)
+
+a <- list(1,2,3,4,5,)
+
+#a <- c(5,6,3,1,7,8,1)
+a[2]
+
+a[4]
+a[[2]]
+a[[3]]
+a[[4]]
+a[[6]]
+
+a[2] + a[3]
+a[[2]] + a[[3]]
+# a[2] = list(2) = c(2) , a[3] = list(3) = c(3)
+# a[[2]] 
+
+b <- c(1,2,3,4,5,6,7)
+b[-4] # 4만 출력
+b[-4] # 4만 제외하고 출력
+b[1:5] # 1~5까지 나온다
+c(4)
+
+# 오늘 배운 내용 스칼라, 벡터, 배열, 행렬, 리스트, 문자열인덱싱, 벡터인덱싱, 리스트 인덱스
