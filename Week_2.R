@@ -309,8 +309,8 @@ a[c(1,6)] #배열을 1차원 벡터로 취급하여 첫 번째와 여섯 번째 
 # 인덱싱 비교
 my_list <- list("apple", 3.14, c(1,2,3), TRUE)
 my_list[[3]][2]
-my_list[3] # 해당 원소가 단독으로 변환
-my_list[[3]] # 자체 변환x 값을 나타내는 데이터 타입으로 변환
+my_list[3] # 해당 원소가 단독으로 변환 / 리스트 값
+my_list[[3]] # 자체 변환x 값을 나타내는 데이터 타입으로 변환 / 벡터값으로 가져온다
 
 my_list[[3]][2]
 
@@ -345,7 +345,7 @@ id<-c(1:5)
 gender <- c("M", "F", "F", "M", "M")
 major <- c("Eng", "Math", "Com", "Eng", "Busi")
 salary <- c(2500,2800,2500,3000,2600)
-survey <-data.frame(ID=id, Gender=gender , Major=major, Salary=salary, stringsAsFactors = F)
+survey <-data.frame(ID=id, Gender=gender , Major=major, Salary=salary, stringsAsFactors = F) # 문자형 형태를 요소로 취급하겠다는 것
 survey # df생성
 
 survey[1] # ID 가져오기
@@ -357,4 +357,70 @@ survey$score = c(200,300,400,500,600) # 데이터프레임 추가
 survey$ss = survey$Salary + survey$score
 survey
 
+summary(survey)
+
+survey$ID = as.integer(survey$ID)
+survey$Gender = as.numeric(survey$Gender)
+survey$Major = as.factor(survey$Major)
+survey$Salary = as.logical(survey$Salary)
+survey$score = as.character(survey$score)
+
+survey$Major = as.numeric(survey$Major)
+
+# 가지고 있는 major의 개수로 나타난다.
+survey$Major = as.factor(survey$Major)
+
+summary(survey)
+
+survey$Major
+
+names(survey)
+
+names(survey)[names(survey)=="Salary"]="SALARY" # 칼럼 명 변경
+names(survey)
+
+names(survey)[names(survey)=="SALARY"]="Salary"
+
+survey[c(1,2)] # 1,2열 추출
+survey[c(-1,-2)] # 1,2열을 제외한 나머지 열 추출
+survey[survey$Gender=="F",] # Gender = F 인 행만 추출
+survey[survey$Major=="Eng"&survey$SALARY>2600,] # Major이 eng이고 salary > 2600인 행만 추출
+
+survey[survey$Major=="Eng"|survey$SALARY>2600,] # 둘 중 하나만 만족해도 가져와라
+
+survey1 = survey[survey$Major=="Eng"|survey$SALARY>2600,]
+survey1
+
+salary_over_2400 <- subset(survey, survey$SALARY>2600)
+salary_over_2400
+
+salary_over_2400 <- subset(survey, survey$SALARY>2600, select = c("SALARY", "Gender"))
+# 원하는 조건의 칼럼만 따로 추출
+salary_over_2400
+# 값들을 요소로 사용할것인지 캐릭터로 사용할 것인지
+# 이변수가 어떤 형태인지 변수의 구조를 판단하고, 
 # 마무우리이이 다양한 인덱싱들
+
+survey$Gender <- NULL # 젠더라는 칼럼 제거
+survey
+
+name_age_df <- data.frame(
+  Name = c("Kim Cheol-soo", "Lee Cheol-soo", "Kim Young-hee", "Lee Young-hee",
+           "Kim Min-jun", "Park Min-jun", "Kim Ji-young", "Park Ji-young"),
+  Age = c(20,24,21,24,35,40,34,35),
+  stringsAsFactors = F
+)
+
+library(tidyr)
+
+name_age_df <- separate(name_age_df, col = "Name", into = c("LastName", "FirstName"), sep = "-")
+print(name_age_df)
+
+data <- read.csv("C:/Users/hj123/OneDrive/바탕 화면/A.csv")
+data$F <- c(10,23)
+data
+
+write.csv(data, "C:/Users/hj123/OneDrive/바탕 화면/A.csv", row.names=F)
+# row,names는 주로 f로 저장을 한다. 첫번째 열에서 순서가 적힌다.
+
+## 다음주에 쪽지시험 본다고합니다. 다들 지금까지 했던 내용들 기억하구 계속 유지할 수 있도록!
