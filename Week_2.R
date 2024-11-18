@@ -309,12 +309,14 @@ a[c(1,6)] #배열을 1차원 벡터로 취급하여 첫 번째와 여섯 번째 
 # 인덱싱 비교
 my_list <- list("apple", 3.14, c(1,2,3), TRUE)
 my_list[[3]][2]
-my_list[3] # 해당 원소가 단독으로 변환 / 리스트 값
-my_list[[3]] # 자체 변환x 값을 나타내는 데이터 타입으로 변환 / 벡터값으로 가져온다
+my_list[3] # 해당 원소가 단독으로 변환
+my_list[[3]] # 자체 변환x 값을 나타내는 데이터 타입으로 변환
 
 my_list[[3]][2]
 
 my_list[3][2] + my_list[3][3] # 계산 안됨, 문제자체가 성립x
+
+
 
 # 3차원 배열 인덱싱
 c <- array(1:24, dim = c(3, 4, 2))
@@ -345,7 +347,7 @@ id<-c(1:5)
 gender <- c("M", "F", "F", "M", "M")
 major <- c("Eng", "Math", "Com", "Eng", "Busi")
 salary <- c(2500,2800,2500,3000,2600)
-survey <-data.frame(ID=id, Gender=gender , Major=major, Salary=salary, stringsAsFactors = F) # 문자형 형태를 요소로 취급하겠다는 것
+survey <-data.frame(ID=id, Gender=gender , Major=major, Salary=salary, stringsAsFactors = F)
 survey # df생성
 
 survey[1] # ID 가져오기
@@ -357,70 +359,93 @@ survey$score = c(200,300,400,500,600) # 데이터프레임 추가
 survey$ss = survey$Salary + survey$score
 survey
 
-summary(survey)
-
-survey$ID = as.integer(survey$ID)
-survey$Gender = as.numeric(survey$Gender)
-survey$Major = as.factor(survey$Major)
-survey$Salary = as.logical(survey$Salary)
-survey$score = as.character(survey$score)
-
-survey$Major = as.numeric(survey$Major)
-
-# 가지고 있는 major의 개수로 나타난다.
-survey$Major = as.factor(survey$Major)
-
-summary(survey)
-
-survey$Major
-
-names(survey)
-
-names(survey)[names(survey)=="Salary"]="SALARY" # 칼럼 명 변경
-names(survey)
-
-names(survey)[names(survey)=="SALARY"]="Salary"
-
-survey[c(1,2)] # 1,2열 추출
-survey[c(-1,-2)] # 1,2열을 제외한 나머지 열 추출
-survey[survey$Gender=="F",] # Gender = F 인 행만 추출
-survey[survey$Major=="Eng"&survey$SALARY>2600,] # Major이 eng이고 salary > 2600인 행만 추출
-
-survey[survey$Major=="Eng"|survey$SALARY>2600,] # 둘 중 하나만 만족해도 가져와라
-
-survey1 = survey[survey$Major=="Eng"|survey$SALARY>2600,]
-survey1
-
-salary_over_2400 <- subset(survey, survey$SALARY>2600)
-salary_over_2400
-
-salary_over_2400 <- subset(survey, survey$SALARY>2600, select = c("SALARY", "Gender"))
-# 원하는 조건의 칼럼만 따로 추출
-salary_over_2400
-# 값들을 요소로 사용할것인지 캐릭터로 사용할 것인지
-# 이변수가 어떤 형태인지 변수의 구조를 판단하고, 
 # 마무우리이이 다양한 인덱싱들
+# 데이터를 받으면 가장먼저 데이터의 특징(기초통계)을 파악한다
+# 가장 먼저 해야할 것 기초통계 / 데이터와 정보의 차이를 알아야 한다.
+# 이 세상에서 떠도는 모든 것이 데이터이다
+# 수치화 시켜서 데이터 프레임 안에 넣는다면, 떠도는 정보들을 규격화시켜서
+# 처음부터 수치화 됐을까요 ? -> 사람들의 규칙에 따라 정리해둔 것
+# 전체의 어떤 떠도는 다양한 값들을 가시적, 계산할 수 있도록 흔히 말하는 데이터이다.
+# 정보란 데이터를 통해서 어떤한 결과를 냄, 사람들이 잘 볼 수 있도록 이미지, 도표 등으로
+# 바꿔서 보여준다. 바꿔주는 것이 정보를 제공한다.
+# 롤 게임(데이터) -> 필요한 데이터(GOLD/m, kda, dpm etc...) -> 게임에서 필요한 데이터 
+# 이기는 확률을 높이기 위해 필요한 데이터가 위에 것, -> 데이터 프레임으로 만들어 준다
+# 5개의 변수가 데이터 프레임으로 규격화를 시켜주는 것이다. -> 뽑힌 결과(수치)
+# 데이터프레임을 통해서 결과를 뽑아야한다. -> 혼동 시 면접에서 바로 컷!
+# 리스트의 개념: 값들을 담는 주머니이다 (다양한 형태의 값들이 담길 수 있다)
+# 배열의 개념: 차원의 개념의 갖는 벡터(같은 값들만)의 집합
+# 데이터프레임의 개념: 본질은 리스트이다, 이유는 다양한 값들이 들어갈 수 있기 때문에
+# df[[]] 이러는 이유 없이 df$를 통해서 가져올 수 있음 (계산을 할 수 있기 때문에)
+# 데이터의 전반적인 구조를 파악하기 위해서 기초통계가 필요함
+# 기초통계 -> 통계란 무엇일까
+# 통계란 우리의 경험을 수치로 만든 것이라 생각하면 좋다
+# 하나의 값으로 전체를 포괄할 수 있는 것이 생겼다.
+# 사분위수 / 범위: 데이터 세트의 최대값과 최소값의 차이
+# 데이터의 중간 50%를 나타내는 첫번째 사분위수(25번째 백분위수)와 세번째 사분위수(75번째 백분위수)
+# 사이의 값 범위
+data <- c(10,15,20,25,30,15,20,25,25,10)
+range_value <- max(data) - min(data)
+Q1 <- quantile(data, 0.25)
+Q1
+Q3 <- quantile(data, 0.75)
+Q3
+iqr_value <- Q3 - Q1 
+iqr_value
+# 데이터를 표현하는 방법 -> 탐색적 데이터 분석(EDA)
 
-survey$Gender <- NULL # 젠더라는 칼럼 제거
-survey
+# 1번
+vec <- c(0,1,2,3,4,5,6,7,8,9,10) # vec 함수 c()
 
-name_age_df <- data.frame(
-  Name = c("Kim Cheol-soo", "Lee Cheol-soo", "Kim Young-hee", "Lee Young-hee",
-           "Kim Min-jun", "Park Min-jun", "Kim Ji-young", "Park Ji-young"),
-  Age = c(20,24,21,24,35,40,34,35),
-  stringsAsFactors = F
-)
+# 2번
+vec2 <- c(10,11,12,13,14,15,16,17,18,19,20)
+mat1 <- cbind(vec,vec2)
+mat1[4,2] <- 100
+mat1
 
-library(tidyr)
+# 3번 *
+matr <- matrix(vec, vec2)
 
-name_age_df <- separate(name_age_df, col = "Name", into = c("LastName", "FirstName"), sep = "-")
-print(name_age_df)
+# 4번 *
+vec3 <- c(20,21,22,23,24,25,26,27,28,29,30)
+mat2 = array(data = c(vec, vec2, vec3), dim = c(5,2))
+mat2
 
-data <- read.csv("C:/Users/hj123/OneDrive/바탕 화면/A.csv")
-data$F <- c(10,23)
-data
+# 5번
+name <- c("Kim", "Park", "Lee")
+Kor <- c(100, 80, 80)
+Eng <- c(60,40,80)
+Mat <- c(50,100,80)
+Phy <- c(40,30,20)
+Che <- c(40,30,20)
+Bio <- c(40,20,10)
+Geo <- c(40,30,50)
 
-write.csv(data, "C:/Users/hj123/OneDrive/바탕 화면/A.csv", row.names=F)
-# row,names는 주로 f로 저장을 한다. 첫번째 열에서 순서가 적힌다.
+score <- data.frame("이름" = name, "국어" = Kor, "영어" = Eng, "수학" = Mat, 
+                    "물리" = Phy, "화학" = Che, "생명과학" = Bio, "지구과학" = Geo) 
+score
 
-## 다음주에 쪽지시험 본다고합니다. 다들 지금까지 했던 내용들 기억하구 계속 유지할 수 있도록!
+# 6번 * 이거 한번 확인 요함
+score$mean <- (score$국어 + score$수학 + score$영어)/3
+score
+test <- subset(score, score$mean >= 80, select = c("이름"))
+test
+
+# 7번
+A <- c("A","B","B","B","B","A","A","A","A","A","B","B")
+B <- c(5000,12000,13000,8000,9000,3000,5000,4000,4500,6000,8000,8500)
+C <- c(2500,500,6000,5500,7000,4600,3000,2500,3400,4700,6400,4400)
+
+hp_df <- data.frame("병원"=A , "진료금액"=B, "처방전금액"=C)
+hp_df
+
+# 8번
+hp_df$sum <- (hp_df$진료금액 + hp_df$처방전금액)
+hp_df
+
+# 9번
+write.csv(hp_df, file="C:/Users/Public/Desktop/test.csv")
+
+# 10번
+hp_df <- read.csv(file="C:/Users/Public/Desktop/test.csv")
+print(hp_df)
+
