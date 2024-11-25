@@ -1,4 +1,3 @@
-
 install.packages("installr")
 library(installr)
 
@@ -448,4 +447,207 @@ write.csv(hp_df, file="C:/Users/Public/Desktop/test.csv")
 # 10번
 hp_df <- read.csv(file="C:/Users/Public/Desktop/test.csv")
 print(hp_df)
+
+install.packages("ggplot2")
+library(ggplot2)
+
+city <- c("Seoul", "Busan", "Daegu", "Seoul", "Busan", "Daegu", "Ulsan")
+pm25 <- c(18, 21, 21, 17, 8, 11, 25)
+df <- data.frame(city = city, pm25 = pm25)
+ggplot(df, aes(x = city, y = pm25, fill = city)) +
+  geom_bar(stat = "identity") +
+  labs(title = "지역별 초미세먼지 농도") +
+  xlab("City") +
+  ylab("농도")
+
+
+vari <- c("오전", "오후","오전","오후","오전","오후","오후")
+df <- data.frame(city = city, pm25 = pm25, vari=vari)
+
+ggplot(df, aes(x = city, y = pm25, fill = vari)) +
+  geom_bar(stat = "identity") +
+  labs(title = "지역별 초미세먼지 농도") +
+  xlab("City") +
+  ylab("농도")
+
+
+# 좌표상에서 점을 찾아주는 그래프이다.
+# 데이터의 점을 찾을 수 있다라 것은 연속적으로 흘러가는 것을 확인 가능하다
+# x축 시간, y축 판매량 -> 아침, 저녁 
+
+df <- data.frame( x = c(1, 2, 3, 4, 5), y = c(6, 8, 5, 9, 7))
+ggplot(df, aes(x = x, y = y)) +
+  geom_point(color = "blue", size = 3) +
+  geom_line(aes(color = "Connected Points"), size = 5)
+  labs(title = "Scatter Plot") +
+  xlab("X") +
+  ylab("Y")
+
+df <- data.frame(x = c(1,2,3,4,5), y = c(6,8,5,9,7))
+df2 <- data.frame(x = c(5,6,7,8,9), y = c(18,12,16,77,63))
+
+# Create the plot
+ggplot() +
+  geom_point(data = df, aes(x = x, y = y), color = "blue", size = 3) +
+  geom_line(data = df, aes(x = x, y = y, color = "Connected Points"), size = 0.5) +
+  geom_point(data = df2, aes(x = x, y = y), color = "blue", size = 3) +
+  geom_line(data = df2, aes(x = x, y = y, color = "Connected Points 2"), size = 0.5) +
+  labs(title = "Scatter Plot") +
+  xlab("X") +
+  ylab("Y")
+
+df <- data.frame( x = c(1, 2, 3, 4, 5), y = c(6, 8, 5, 9, 7))
+ggplot(df, aes(x = x, y = y)) +
+  geom_point(color = "blue", size = 3) +
+  geom_smooth(method = "lm", se = FALSE, aes(color = "Trendline")) +
+  labs(title = "Scatter Plot") +
+  xlab("X") +
+  ylab("Y")
+
+# 히스토그램과 막대그래프의 차이점이 무엇이냐
+# 라면을 끓일 때 히스토그램 연속적인 값에 대해 구간으로 나눠서
+# 히스트그램 안에 빈도로 표현해주는 것이다. 
+# 지진이 발생하는 것이 300건, 
+
+df <- data.frame(values = c(5,7,10,12,14,18,20,22,25,27,30))
+
+ggplot(df, aes(x = values)) +
+  geom_histogram(binwidth = 5, fill = "steelblue", color = "white") +
+  labs(title = "Histogram of Values") +
+  xlab("Values") +
+  ylab("Frequency")
+
+# boxplot, pichart는 시험에 내지 않기 때문, 왜냐하면
+# 엑셀로 그리면 된다!
+
+df <- data.frame(values = c(5, 7, 10, 12, 14, 18, 20, 22, 25, 27, 30))
+  ggplot(df, aes(x = values)) +
+    geom_histogram(binwidth = 5, fill = "steelblue", color = "white") +
+    labs(title = "Histogram of Values") +
+    xlab("Values") +
+    ylab("Frequency")
+
+df <- data.frame(
+  group = c(rep("Group 1", 60), rep("Group 2", 60)),
+  values = c(rnorm(60, mean = 0, sd = 1), rnorm(60, mean = 2, sd = 1)))
+
+ggplot(df, aes(x = group, y = values)) +
+  geom_boxplot(fill = c("lightblue","lightgreen"), outlier.color = "red") +
+  labs(title = "Boxplot Example") +
+  xlab("Group") +
+  ylab("Values")
+
+# FIFO란 근무형태를 의미하는 것이다!
+# 화이트가드, RSA 
+# 데이터의 형태 -> 데이터를 불러오기 -> 변수생성
+# -> EDA (탐색적 데이터 분석) 
+# 데이터 전처리는 불러오기, EDA 두 과정에서 사용될 수 있다.
+# 데이터 분석에 적합한 형태로 만드는 것이다.
+# 우리가 원하는 방식이 아니더라도, 납득한 변수를 선택하는 것도 중요
+
+install.packages("data.table")
+library(data.table)
+# fread 불러오는 것이 가장 빠르게 불러올 수 있다.
+#test <- read.csv("C:/Users/hj123/Desktop/학기중파일/학기중파일/2024_2학기 수업/월_재난안전프로그래밍/data/HN_09.csv")
+hn_2009 <- fread("C:/Users/hj123/Desktop/학기중파일/학기중파일/2024_2학기 수업/월_재난안전프로그래밍/data/HN_09.csv")
+
+#test
+hn_2009
+
+hn_2010 <- fread("C:/Users/hj123/Desktop/학기중파일/학기중파일/2024_2학기 수업/월_재난안전프로그래밍/data/HN_10~12.csv")
+hn_2011 <- fread("C:/Users/hj123/Desktop/학기중파일/학기중파일/2024_2학기 수업/월_재난안전프로그래밍/data/HN_13~15.csv")
+
+# 데이터 프레임 모든 변수 합치기
+combined_df <- rbindlist(list(hn_2009,hn_2010,hn_2011), fill=TRUE)
+fill=TRUE # 누락된 변수에 대해 처리함
+
+# 데이터 차원 판단 / 행 , 열의 개수들
+dim(combined_df)
+
+# hn_2009에 저장되어 있는 변수들만 가지고 오고 싶을 경우
+col = colnames(hn_2009)
+col_2009 <- combined_df[, col, with = FALSE]
+col_2009
+
+df <- fread("C:/Users/hj123/Desktop/학기중파일/학기중파일/2024_2학기 수업/월_재난안전프로그래밍/data/HN_10~12.csv")
+
+df_clean <- na.omit(df)
+
+# 문자형, 수치형 분리 -> 계산하기 쉬우라고 분리한다.
+df_numeric <- df[, sapply(df, is.numeric), with=FALSE] 
+df_character <- df[, sapply(df, is.character), with=FALSE]
+dim(df_numeric)
+dim(df_character)
+
+install.packages("mice")
+library(mice)
+sub_df_numeric <- fread("C:/Users/hj123/Desktop/학기중파일/학기중파일/2024_2학기 수업/월_재난안전프로그래밍/data/a.csv")
+
+imputed_data <- mice(sub_df_numeric, m=5, maxit = 10, method="pmm", seed = 1235)
+imputed_data
+# 결측값 처리 방법 완전 꿀 방법
+# pmm, norm, norm 
+completed_data <- complete(imputed_data, 1) #첫번째 데이터를 사용
+fwrite(completed_data, 'C:/Users/hj123/Desktop/바탕화면.csv')
+
+# 오늘은 여기까지, 흐름에 대해서만 기억해라 개인적으로 결측값 채워
+# 넣는 것이 굉장히 좋은데 저거 나중에 꼭 사용해보자.
+
+install.packages("dplyr")
+library()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
